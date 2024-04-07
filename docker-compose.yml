@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./docker-files/nginx
+      dockerfile: Dockerfile
+
+    ports:
+      - 9090:80
+
+    volumes:
+      - .:/var/www/html
+
+    container_name: nginx
+
+    depends_on:
+      - mysql
+  
+  php:
+    build: 
+      context: ./docker-files/php
+      dockerfile: Dockerfile
+
+    volumes:
+      - .:/var/www/html
+
+  composer:
+    build:
+      context: ./docker-files/composer
+      dockerfile: Dockerfile
+    
+    volumes:
+      - .:/var/www/html
+
+    working_dir: /var/www/html
+
+    depends_on:
+      - php
+
+  npm:
+    image: node:21.7.2-alpine
+
+    volumes:
+      - .:/var/www/html
+
+    working_dir: /var/www/html
+
+    ports:
+      - 5173:5173
+
+    entrypoint: ['npm']
+
+  artisan:
+    build:
+      context: ./docker-files/php
+      dockerfile: Dockerfile
+
+    volumes:
+      - .:/var/www/html
+    
+    working_dir: /var/www/html
+    
+    entrypoint: ["php", "/var/www/html/artisan"]
+
+  mysql:
+    image: mysql:8.3.0
+
+    ports:
+      - 3307:3306
+
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
