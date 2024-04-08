@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Posts\CreatePost;
+use App\Actions\Posts\UpdatePost;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -63,15 +65,20 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', [
+            'categories' => Category::query()->select(['id', 'name'])->get(),
+            'post' => $post
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, UpdatePost $action, Post $post)
     {
-        //
+        return $action->handle($request, $post)
+                    ? to_route('posts.index')->with(['success', 'The post has been updated'])
+                    : to_route('posts.index')->with(['error', 'Post could not be updated']);
     }
 
     /**
@@ -79,6 +86,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        return $post->delete()
+                    ? to_route('posts.index')->with(['success', 'The post has been updated'])
+                    : to_route('posts.index')->with(['error', 'Post could not be updated']);
     }
 }

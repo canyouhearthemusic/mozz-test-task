@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex gap-x-6 p-6">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex gap-x-12 p-8">
                 <div>
                     <img class="rounded-lg" width="600px" src="{{ isset($post->thumbnail)
                             ? asset('storage/' . $post->thumbnail)
