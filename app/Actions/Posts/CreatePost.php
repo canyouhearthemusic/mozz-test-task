@@ -11,11 +11,14 @@ class CreatePost
     public function handle(Request $request)
     {
         DB::transaction(function () use ($request) {
+            $request->thumbnail = $request->file('thumbnail')->store('thumbnails');
+
             $createdPost = Post::create([
                 'title' => $request->title,
                 'excerpt' => $request->excerpt,
                 'body' => $request->body,
-                'user_id' => $request->user()->id
+                'user_id' => $request->user()->id,
+                'thumbnail' => $request->thumbnail
             ]);
 
             foreach ($request->category as $categoryId) {
