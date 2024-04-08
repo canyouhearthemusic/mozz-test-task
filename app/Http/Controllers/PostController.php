@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Posts\CreatePost;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -16,6 +18,7 @@ class PostController extends Controller
         // TODO: Optimize query to reuse category models
         $posts = Post::query()
                         ->with('author:id,name', 'categories:id,name')
+                        ->latest()
                         ->paginate(($request->has('paginate') ? $request->query('paginate') : 15))
                         ->withQueryString();
 
@@ -30,15 +33,21 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::query()->select(['id', 'name'])->get();
+
+        return view('posts.create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request, CreatePost $action)
     {
-        //
+        return $action->handle($request)
+                    ? to_route('posts.index')->with(['success', 'The post has been created'])
+                    : to_route('posts.index')->with(['error', 'Post could not be created']);
     }
 
     /**
