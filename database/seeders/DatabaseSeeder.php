@@ -16,25 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            PermissionSeeder::class
+            PermissionSeeder::class,
+            UserSeeder::class,
+            CategorySeeder::class,
+            PostSeeder::class,
         ]);
-
-        User::factory()->create([
-            'name' => 'Иван Иванов Иванович',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('pass1234'),
-        ])->assignRole('admin');
-
-        User::factory()->create([
-            'name' => 'Петр Петров Петрович',
-            'email' => 'editor@example.com',
-            'password' => Hash::make('pass1234'),
-        ])->assignRole('editor');
-
-        User::factory()->create([
-            'name' => 'Михаил Михаилов Михаилович',
-            'email' => 'regular@example.com',
-            'password' => Hash::make('pass1234'),
-        ])->assignRole('regular');
     }
 }
