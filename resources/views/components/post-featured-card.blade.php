@@ -21,12 +21,14 @@
                     @endforeach
                 </div>
 
-                @hasanyrole('editor|admin')
                 <div class="flex gap-x-4 items-center" x-show="show">
+                    @can('update', App\Models\Post::class)
                     <a href="{{ route('posts.edit', $post) }}">
                         <x-edit-icon />
                     </a>
+                    @endcan
 
+                    @can('delete', App\Models\Post::class)
                     <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
@@ -34,8 +36,9 @@
                             <x-delete-icon />
                         </button>
                     </form>
+                    @endcan
                 </div>
-                @endhasanyrole
+                
             </div>
             <header class="mt-8 lg:mt-0">
                 <div class="mt-4">

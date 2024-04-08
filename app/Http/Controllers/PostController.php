@@ -11,13 +11,17 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // TODO: Optimize query to reuse category models
-        $posts = Post::with('author:id,name', 'categories:id,name')->paginate();
+        $posts = Post::query()
+                        ->with('author:id,name', 'categories:id,name')
+                        ->paginate(($request->has('paginate') ? $request->query('paginate') : 15))
+                        ->withQueryString();
 
         return view('posts.index', [
-           'posts' => $posts
+           'posts' => $posts,
+           'paginatedBy' => $request->query('paginate', ''),
         ]);
     }
 
