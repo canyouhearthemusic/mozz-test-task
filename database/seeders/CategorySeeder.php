@@ -20,6 +20,6 @@ class CategorySeeder extends Seeder
             ['name' => 'Economy', 'created_at' => now(), 'updated_at' => now()],
         ];
 
-        Category::create($categories);
+        Category::insert($categories);
     }
 }

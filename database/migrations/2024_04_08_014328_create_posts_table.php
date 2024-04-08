@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->index();
+            $table->string('thumbnail')->nullable();
             $table->string('title');
             $table->string('excerpt');
             $table->string('body');
