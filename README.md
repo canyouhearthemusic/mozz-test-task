@@ -1,3 +1,52 @@
+Запуск
+=================
+
+```
+git clone https://github.com/canyouhearthemusic/mozz-test-task.git
+```
+
+```
+cd mozz-test-task
+```
+
+```
+cp .env.example .env
+```
+
+```
+docker compose up -d
+```
+
+```
+docker compose run --rm composer install
+docker compose run --rm npm install
+docker compose run --rm npm run build
+docker compose run --rm artisan key:generate
+docker compose run --rm artisan migrate:fresh
+docker compose run --rm artisan db:seed
+```
+
+## Приложение готово к использованию.
+
+### Реквизиты:
+**Admin**:\
+    - admin@example.com\
+    - pass1234
+
+**Editor**:\
+    - editor@example.com\
+    - pass1234
+
+**Regular User**:\
+    - regular@example.com\
+    - pass1234
+
+
+Смотреть Демо
+=================
+Demo: https://youtu.be/rJDc1tfztzA
+
+
 Что нужно сделать
 =================
 
