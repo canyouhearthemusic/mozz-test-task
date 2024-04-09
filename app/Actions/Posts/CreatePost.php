@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Actions\Posts;
+
 use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
@@ -11,7 +12,9 @@ class CreatePost
     public function handle(Request $request)
     {
         DB::transaction(function () use ($request) {
-            $request->thumbnail = $request->file('thumbnail')->store('thumbnails');
+            $request->thumbnail = $request->has('thumbnail')
+                ? $request->file('thumbnail')->store('thumbnails')
+                : null;
 
             $createdPost = Post::create([
                 'title' => $request->title,

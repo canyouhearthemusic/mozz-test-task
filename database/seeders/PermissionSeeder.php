@@ -16,5 +16,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'posts.create'])->assignRole('admin');
         Permission::create(['name' => 'posts.update'])->assignRole('admin', 'editor');
         Permission::create(['name' => 'posts.delete'])->assignRole('admin');
+        Permission::create(['name' => 'posts.toggleVisibility'])->assignRole('admin', 'editor');
     }
 }

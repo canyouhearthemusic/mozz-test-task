@@ -1,3 +1,7 @@
+<?php
+use App\Enums\PostStatus;
+?>
+
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto">
@@ -7,9 +11,39 @@
                             ? asset('storage/' . $post->thumbnail)
                             : " /images/not_found.jpg" }}" alt="img">
 
-                    <p class="mt-2 text-gray-400 text-sm text-center">
-                        Published
-                        <time> {{ $post->created_at->diffForHumans() }} </time>
+                    <p class="mt-2 text-gray-400 text-sm text-center font-semibold">
+                        @if (auth()->user()?->hasPermissionTo('posts.toggleVisibility'))
+                            @if ($post->hasStatus(PostStatus::DRAFT))
+                            <div class="flex justify-center items-center gap-x-2">
+                                <span class="px-3 py-1 rounded-full bg-gray-200 text-black font-semibold text-sm">In
+                                    Draft
+                                </span>
+                                <form action="{{ route('posts.toggle-visibility', $post) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                <button type="submit"
+                                    class="text-gray-400 text-sm text-center font-semibold">Publish</button>
+                                </form>
+                            </div>
+                            @endif
+
+                            @if ($post->hasStatus(PostStatus::PUBLISHED))
+                            <div class="flex justify-center items-center gap-x-2">
+                                <form action="{{ route('posts.toggle-visibility', $post) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="text-gray-400 text-sm text-center font-semibold">Draft</button>
+                                </form>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-green-200 text-black font-semibold text-sm">Published</span>
+                            </div>
+                            @endif
+
+                            @else
+                            {{ $post->status->label() }}
+                            <time> {{ $post->updated_at->diffForHumans() }} </time>
+
+                        @endif
                     </p>
 
                     <div class="flex items-center lg:justify-center text-sm mt-4">
@@ -54,9 +88,11 @@
                                 @endforeach
                             </div>
                         </div>
-                        <h1 class="font-bold text-3xl lg:text-4xl mb-3">
-                            {{ $post->title }}
-                        </h1>
+                        <div>
+                            <h1 class="font-bold text-3xl lg:text-4xl mb-3">
+                                {{ $post->title }}
+                            </h1>
+                        </div>
                         <hr>
                         <br>
                         <div class="space-y-4 lg:text-lg leading-loose">

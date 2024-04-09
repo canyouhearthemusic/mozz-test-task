@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class PostFactory extends Factory
             'title' => $this->faker->realText(20),
             'excerpt' => $this->faker->realText(30),
             'body' => $this->faker->realTextBetween(150, 200),
+            'status' => PostStatus::PUBLISHED->value,
         ];
     }
 }

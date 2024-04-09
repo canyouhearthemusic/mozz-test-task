@@ -22,6 +22,7 @@ Route::controller(PostController::class)->name('posts.')->group(function () {
     Route::get('/posts/{post}', 'show')->name('show');
     Route::get('/posts/{post}/edit', 'edit')->name('edit');
     Route::patch('/posts/{post}', 'update')->name('update');
+    Route::patch('/posts/{post}/toggle-visibility', 'toggleVisibility')->name('toggle-visibility');
     Route::delete('/posts/{post}', 'destroy')->name('destroy');
 });
 

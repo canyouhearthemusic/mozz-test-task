@@ -13,11 +13,11 @@
             <div class="flex justify-between">
                 <div class="flex justify-start gap-x-3">
                     @foreach ($post->categories as $category)
-                    <a href=""
+                    <span
                         class="px-3 py-1 border border-indigo-400 bg-indigo-50 rounded-full text-indigo-400 text-xs uppercase font-semibold"
                         style="font-size: 10px">
                         {{ $category->name }}
-                    </a>
+                    </span>
                     @endforeach
                 </div>
 
